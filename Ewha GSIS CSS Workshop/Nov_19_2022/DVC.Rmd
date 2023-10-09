@@ -1,0 +1,244 @@
+---
+title: "Data visualization and Communication"
+subtitle: "<br/>Ewha GSIS Computational Social Science Workshop II"
+author: "Iegor Vyshnevskyi"
+institute: "Woosong University | KDI School"
+date: "Saturday, November 19, 2022"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    # css: xaringan-themer.css
+    lib_dir: libs
+    nature:
+      beforeInit: "https://platform.twitter.com/widgets.js"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+<style>
+@media print{
+  body, html, .remark-slides-area, .remark-notes-area {
+    height: 100% !important;
+    width: 100% !important;
+    overflow: visible;
+    display: inline-block;
+    }
+</style>
+
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(knitr)
+opts_chunk$set(fig.width = 10, 
+               message = FALSE, 
+               warning = FALSE,
+               echo = FALSE)
+```
+
+# Agenda
+<br/>
+1. Introduction
+
+2. The Roots
+
+3. Some practical tips
+
+---
+
+
+class: inverse, center, middle
+
+# 1. Introduction
+
+---
+
+# About me
+<br/>
+.pull-left[
+Hello! My name is *Iegor*.
+
+- Assistant Professor, Woosong University
+- Ph.D candidate, KDIS
+- MSc, KDIS (2014)
+- MSc, KNEU (2009)
+- Background: international finance & central banking
+- Research interests: banking and central banking, computational data science
+]
+
+
+.pull-right[
+Some Info:
+
+- [Google Scholar](https://scholar.google.com/citations?hl=en&user=4Kcp5WoAAAAJ)
+- [Linkedin](https://www.linkedin.com/in/iegor-vyshnevskyi-b9743b51/)
+- [ResearchGate](https://www.researchgate.net/profile/Iegor-Vyshnevskyi)
+- [GitHub](https://github.com/Iegor-Vyshnevskyi)
+- email: ievysh@kdis.ac.kr
+]
+
+
+---
+
+# Data visualization
+<br/>
+> "*Data doesn't speak for itself*, so you need to analyze it and make the findings accessible by presenting them with effective visualization."
+
+- Dr. Jae Yeon Kim
+
+<br/>
+
+> "Data visualization is a great way to simplify data and show it in a form that is understandable, insightful, and actionable.
+
+> **Data visualization  is being increasingly seen as the vital final step of any successful data-driven analytics plan.**"
+
+- Caroline Lee
+
+---
+
+
+# Data visualization with R - a universal approach
+<br/>
+.center[
+<figure>
+  <img src="learning-r.png" alt="Learning R through googling" title="Learning R through googling" width="70%" style="border: 1px solid #EE6A24">
+</figure>
+]
+
+???
+
+https://twitter.com/kierisi/status/898534740051062785
+
+---
+
+class: inverse, center, middle
+
+# 2. The Roots
+
+---
+
+# The beginnings of ggplot and reshape
+<br/>
+.pull-left[
+ <img src="p1.jpg" alt="Leland Wilkinson. The Grammar of Graphics (Statistics and Computing)" width="55%">
+]
+
+
+.pull-right[
+<img src="p4.png" alt="Hadley Wickham. Practical Tools for Exploring Data and Models" width="65%">
+]
+
+
+---
+
+
+class: inverse, center, middle
+
+# 3. Some practical tips
+
+---
+
+# To remember
+
+<br/>
+> "In good information visualization, there are no rules, no guidelines, no templates, no standard technologies, no stylebooks…*You must simply do whatever it takes.*"
+
+- Edward Tufte
+
+<br/>
+
+> "Whenever possible, visualize your data with *solid, colored shapes* rather than with lines that outline those shapes. Solid shapes are more easily perceived, are less likely to create visual artifacts or optical illusions, and do more immediately convey amounts than do outlines."
+
+- Claus Wilke
+
+---
+
+# Don't play with y-axis scale
+<br/>
+Franconeri et al (2021). The Science of Visual Data Communication: What Works.
+
+<div>
+.center[<img src="p5.png" height="80%" width="80%">]
+
+---
+
+# Don't play with x-axis scale
+<br/>
+.center[<img src="p6.png" height="80%" width="80%">]
+
+---
+
+# Use color to your advantage
+
+```{r 1, out.width = "100%"}
+#devtools::install_github("gadenbuie/tweetrmd")
+
+library(tweetrmd)
+
+tweet_embed("https://twitter.com/milos_agathon/status/1592430711872843776?cxt=HHwWgMDT6fPSuZksAAAA", maxwidth = 425, align = "left", hide_media = FALSE, hide_thread = TRUE, omit_script = TRUE)
+
+tweet_embed("https://mobile.twitter.com/dr_xeo/status/1389584111392669699?cxt=HHwWhoCykeLY5cgmAAAA", maxwidth = 700, align = "right", hide_media = FALSE, hide_thread = TRUE, omit_script = TRUE )
+
+```
+
+
+---
+
+# There are many more dos and don'ts
+
+<br/>
+1. Drop legends, use annotations & bigger labels
+
+2. Never use dual axes (some exceptions: Fahrenheit vs Celsius)
+
+3. Sort bar charts (i.e., ascending/descending order)
+
+4. Use shapes & colors (double-encoding data)
+
+5. Use 3D only when really necessary 
+
+6. Use pie charts with few categories (otherwise, bar charts)
+
+---
+
+# Some readings
+
+<br/>
+
+1. Franconeri et al (2021). [The Science of Visual Data Communication: What Works](https://journals.sagepub.com/stoken/default+domain/10.1177%2F15291006211051956-FREE/full#abstract)
+
+2. Kieran Healy (2019). [Data Visualization](https://socviz.co/) 
+
+3. Claus Wilke (2019). [Fundamentals of Data Visualization](https://serialmentor.com/dataviz/)
+
+4. Hadley Wickham et al (2009). [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/)
+
+5. Garrick Aden-Buie. [A Gentle Guide to the Grammar of Graphics with ggplot2](https://pkg.garrickadenbuie.com/gentle-ggplot2/#1)
+
+---
+class: inverse center middle
+
+#Let's have some fun!
+
+???
+1. To print pdf slides
+https://stackoverflow.com/questions/54968311/xaringan-export-slides-to-pdf-while-preserving-formatting
+
+pagedown::chrome_print("DVC.html") # but not all pictures are visible
+
+2. Option: https://stackoverflow.com/questions/54968311/xaringan-export-slides-to-pdf-while-preserving-formatting
+
+install.packages("remotes")
+remotes::install_github("jhelvy/xaringanBuilder")
+remotes::install_github("jhelvy/renderthis@v0.0.9")
+
+library(xaringanBuilder)
+build_pdf("DVC.html")
+
+3. Option
+install.packages("renderthis")
+remotes::install_github('rstudio/chromote')
+library(renderthis)
+
+renderthis::to_pdf("DVC.html")
