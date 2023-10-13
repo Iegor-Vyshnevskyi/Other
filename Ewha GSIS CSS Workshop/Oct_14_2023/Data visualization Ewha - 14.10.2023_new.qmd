@@ -48,6 +48,7 @@ pacman::p_load(
   envalysis, # for data exploration process
   cowplot, # for combining plots
   scales, # for percentage
+  ggrepel # for percentage
 )
 
 ```
@@ -231,7 +232,7 @@ g1 # show the plot
 # Create barplot for the year 2018
 g2 <- energy_type_fin %>% 
   select(-c(`2016`,`2017`)) %>% 
-  ggplot(aes(x= country_name, y = `2018`, fill = type))+ 
+  ggplot(aes(x= country_name, y = `2018`, fill = type))+ # fill by type
   geom_col() # geom_col() is a shortcut for geom_bar(stat = "identity")
 
 g2 # show the plot
@@ -260,11 +261,11 @@ g3 # show the plot
 ```{r}
 # Create table for ordering
 energy_total <- energy_type_fin %>% 
-  select(-c(`2016`, `2017`)) %>% 
-  group_by(country_name) %>% 
+  select(-c(`2016`, `2017`)) %>% # remove 2016 and 2017 columns
+  group_by(country_name) %>% # group by country
   mutate(
-    energy_total = sum(`2018`)/1000,
-    `2018` = `2018`/1000
+    energy_total = sum(`2018`)/1000, # calculate total energy consumption
+    `2018` = `2018`/1000 # divide by 1000 to get gigawatts
   )
 
 energy_total
@@ -272,9 +273,9 @@ energy_total
 # Create barplot for the year 2018 with ordering
 
 g4 <- energy_total %>% 
-  ggplot(aes(fct_reorder(country_name, energy_total), `2018`, fill = type))+
-  geom_col()+
-  coord_flip()
+  ggplot(aes(fct_reorder(country_name, energy_total), `2018`, fill = type))+ # reorder countries by total energy consumption
+  geom_col()+ # geom_col() is a shortcut for geom_bar(stat = "identity")
+  coord_flip() # flip the coordinates
 
 g4 # show the plot
 
@@ -285,13 +286,13 @@ g4 # show the plot
 ```{r}
 
 g5 <- energy_total %>% 
-  ggplot(aes(fct_reorder(country_name, energy_total), `2018`, fill = type))+
+  ggplot(aes(fct_reorder(country_name, energy_total), `2018`, fill = type))+ # reorder countries by total energy consumption
   geom_col()+
   coord_flip()+
   theme_publish()+ # theme_publish() is a shortcut for theme_minimal() + theme(text = element_text(family = "Georgia")) + theme(plot.title = element_text(hjust = 0.5))
   theme(
-    axis.title.y = element_blank(),
-    axis.title.x = element_blank()
+    axis.title.y = element_blank(), # remove y axis title
+    axis.title.x = element_blank() # remove x axis title
   )+   # remove y axis title
   labs(
     fill = "Total Energy Consumption by Production Method
@@ -383,10 +384,103 @@ plot_joined <-  cowplot::plot_grid(g7, g8, cols = 2)
 plot_joined
 
 # Save the plot as a PNG image
+#getwd() # check the working directory
+#setwd("C:/Users/ievys/Desktop/Workshop") # set the working directory
+
 ggsave(plot_joined, filename = "plot_joined.png")
 
 # Save the plot as a PDF file
 ggsave(plot_joined, filename = "plot_joined.pdf")
+
+```
+
+
+### One country story
+
+Let's see the energy consumption in Ukraine.
+
+``` {r}
+# Create table for Ukraine
+
+energy_ukraine <- energy_type_fin %>% 
+  filter(country_name == "Ukraine") %>% # filter by Ukraine
+  pivot_longer( # long data
+    cols = contains("201", ignore.case = TRUE),
+    names_to = "year",
+    values_to = "gwh"
+  ) %>% 
+  mutate(
+    year = as.integer(stringr::str_remove(year, "x"),
+    energy_total = sum(gwh, na.rm = T))
+  ) %>%
+  arrange(desc(year), desc(gwh)) # Arrange by year and gwh in descending order
+
+energy_ukraine %>% tibble()
+
+# Create plot for Ukraine
+
+g9 <- energy_ukraine %>% 
+  ggplot(aes(year, gwh, fill = type)) +
+  geom_col() +
+  scale_y_continuous(labels = scales::label_number(scale = 1/1000000, suffix = "M")) + # divide by 1000000 to get gigawatts
+  labs(
+    title = "Ukraine power production",
+    subtitle = "Ukraine is heavily dependent on nuclear power",
+    y = "Power (GWh)",
+    x = "Year",
+    fill = "Type"
+  ) +
+  theme_publish() +
+  theme(legend.position = "bottom")
+
+
+# Save the plot as a PNG image
+ggsave(g9, filename = "g9.png")
+
+# Save the plot as a PDF file
+ggsave(g9, filename = "g9.pdf")
+
+g9 # show the plot
+
+
+# Pie chart for Ukraine for each year in percentage of total
+
+# Calculate percentage of total for each year
+energy_ukraine <- energy_ukraine %>%
+  group_by(year) %>%
+  mutate(percentage = round(gwh / sum(gwh) * 100, 1)) %>%
+  arrange(desc(percentage)) # Sort by percentage in descending order within each year
+
+# Create the plot
+g10 <- ggplot(energy_ukraine, aes(x = "", y = percentage, fill = reorder(type, -percentage))) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y") + # make it a pie chart
+  geom_text_repel(
+    aes(label = ifelse(percentage > 0.5, paste0(percentage, "%"), "")), # add labels for percentage > 0.5
+    position = position_stack(vjust = 0.2) # adjust labels position
+  ) +
+  facet_wrap(~year, nrow = 1) +
+  labs(
+    title = "Ukraine power production",
+    subtitle = "Ukraine is heavily dependent on nuclear power",
+    fill = "Type"
+  ) +
+  theme(
+    legend.position = "bottom",
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.line = element_blank()
+  )
+
+print(g10)
+
+# Save the plot as a PNG image 
+ggsave(g10, filename = "g10.png")
+
+# Save the plot as a PDF file
+ggsave(g10, filename = "g10.pdf")
 
 ```
 
