@@ -16,15 +16,14 @@ number-depth: 3
 editor: visual
 ---
 
-## Objectives 
+## Objectives
 
 -   Studying the `ggplot2` package's basics through telling a story with data
 -   Practicing creating some basic plots using `ggplot2`
 
 ## Prerequisites
 
-- Type `packageVersion("dplyr")` to see if your `dplyr` package is up to date. Update the installed version by typing `update.packages("dplyr")` if the current version is less than 1.0.R might need to be restarted for it to work.  
-
+-   Type `packageVersion("dplyr")` to see if your `dplyr` package is up to date. Update the installed version by typing `update.packages("dplyr")` if the current version is less than 1.0.R might need to be restarted for it to work.
 
 ```{r}
 ifelse(packageVersion("dplyr") >= 1,
@@ -82,7 +81,7 @@ country_totals %>% tibble()
 
 Data analysis in R may be done in a variety of ways.
 
--   `head(energy_types)` / `tail(energy_types)` 
+-   `head(energy_types)` / `tail(energy_types)`
 
 -   `summary(energy_types)`
 
@@ -103,7 +102,7 @@ skim(country_totals)
 
 ```
 
-``` {r}
+```{r}
 
 # use DataExplorer power
 
@@ -129,7 +128,7 @@ plot_histogram(energy_types) # visualize distributions for all continuous variab
 
 ### Fixing missing data (if/when possible)
 
-``` {r}
+```{r}
 # identify missing data
 energy_types %>% 
   filter(is.na(country_name))
@@ -146,8 +145,7 @@ skimr::skim(energy_types)
 
 ```
 
-
-``` {r}
+```{r}
 
 # identify missing data
 country_totals %>% 
@@ -165,17 +163,15 @@ skimr::skim(country_totals)
 
 ```
 
-
 ## Data Visualization with ggplot2
 
 -   The following material is adapted from the 2022 [Data Visualization](https://github.com/KDIS-DSPPM/data-visualization) course of Dr. Jae Yeon Kim, Brett C. Moxham illustrations to [European Energy (Tidy Tuesday)](https://brettmoxham.netlify.app/post/european-energy-tidy-tuesday/), and Mark Druffel illustrations to [European Energry. Tidy Tuesday analysis of European energy production from 2016 to 2018.](https://www.mark-druffel.com/posts/2021-08-13-european-energy/)
 
-``` {r}
+```{r}
 
 help(ggplot)
 
 ```
-
 
 ### The grammar of graphics
 
@@ -195,7 +191,7 @@ No need to be concerned about unfamiliar terms. We use the "learning by doing" p
 
     1.  Tidy data (what data) : `ggplot(data = )`
     2.  Mapping (what relationships) : `aes(x = ,  y= )`
-    3.  Geom (how) : `geom_()` 
+    3.  Geom (how) : `geom_()`
     4.  Cooordinates and scales (how to see)
     5.  Labels and guides (how to guide) : `labs(),` `guides()`
     6.  Themes (how to theme)
@@ -224,7 +220,6 @@ g1 <- energy_type_fin %>%
 g1 # show the plot
 
 ```
-
 
 ### Basic plot aes (x , y) & geom
 
@@ -308,7 +303,7 @@ Let's say we want to see the share of each energy type in the total energy consu
 
 ### A new chart for the share of each energy type in the total energy consumption
 
-```{r} 
+```{r}
 
 # Create table for percentage
 energy_total_perc <- energy_total %>% 
@@ -394,12 +389,11 @@ ggsave(plot_joined, filename = "plot_joined.pdf")
 
 ```
 
-
 ### One country story
 
 Let's see the energy consumption in Ukraine.
 
-``` {r}
+```{r}
 # Create table for Ukraine
 
 energy_ukraine <- energy_type_fin %>% 
@@ -474,7 +468,7 @@ g10 <- ggplot(energy_ukraine, aes(x = "", y = percentage, fill = reorder(type, -
     axis.line = element_blank()
   )
 
-print(g10)
+g10
 
 # Save the plot as a PNG image 
 ggsave(g10, filename = "g10.png")
@@ -484,12 +478,11 @@ ggsave(g10, filename = "g10.pdf")
 
 ```
 
-
 ### Another story with data
 
 Let's see the agregate energy consumption in Europe.
 
-``` {r}
+```{r}
 
 energy_types <- tuesdata$energy_types # load data
 
@@ -566,16 +559,15 @@ totals_by_year <- energy_types %>%
 
 ```
 
-
 ### Some related powerful illustrations
 
-+ mstkolf, [TidyTuesday - European Energy](https://mstkolf.rbind.io/2020/08/11/tidytuesday-2020-week32/);
-+ Kelsey E. Gonzalez, [Tidy Tuesday: European Energy Consumption](https://kelseygonzalez.github.io/visualization/energy/);
-+ R Screencast, [TidyTuesday screencast: European Energy](https://www.rscreencasts.com/content_pages/european-energy);
-+ Schmidt Notes, [TidyTuesday: Energy Usage in Europe](https://www.schmidtynotes.com/blog/r/2020-08-16-energy_in_europe_tidytuesday/).
+-   mstkolf, [TidyTuesday - European Energy](https://mstkolf.rbind.io/2020/08/11/tidytuesday-2020-week32/);
+-   Kelsey E. Gonzalez, [Tidy Tuesday: European Energy Consumption](https://kelseygonzalez.github.io/visualization/energy/);
+-   R Screencast, [TidyTuesday screencast: European Energy](https://www.rscreencasts.com/content_pages/european-energy);
+-   Schmidt Notes, [TidyTuesday: Energy Usage in Europe](https://www.schmidtynotes.com/blog/r/2020-08-16-energy_in_europe_tidytuesday/).
 
 ## Credits
 
-1. Dr. Jae Yeon Kim, [Data Visualization](https://github.com/KDIS-DSPPM/data-visualization);
-2. Brett C. Moxham, [European Energy (Tidy Tuesday)](https://brettmoxham.netlify.app/post/european-energy-tidy-tuesday/);
-3. Mark Druffel, [European Energry. Tidy Tuesday analysis of European energy production from 2016 to 2018.](https://www.mark-druffel.com/posts/2021-08-13-european-energy/).
+1.  Dr. Jae Yeon Kim, [Data Visualization](https://github.com/KDIS-DSPPM/data-visualization);
+2.  Brett C. Moxham, [European Energy (Tidy Tuesday)](https://brettmoxham.netlify.app/post/european-energy-tidy-tuesday/);
+3.  Mark Druffel, [European Energry. Tidy Tuesday analysis of European energy production from 2016 to 2018.](https://www.mark-druffel.com/posts/2021-08-13-european-energy/).
